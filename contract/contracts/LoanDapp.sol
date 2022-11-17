@@ -48,4 +48,13 @@ contract BankDapp {
         uint256 balance;
         bool isLoanTaken;
     }
+
+    //Modifer that checks if message sender is an owner of the application
+    modifier forOwner() {
+        require(
+            msg.sender == ownerAddress,
+            "You are not allowed to access this"
+        );
+        _;
+    }
 }
