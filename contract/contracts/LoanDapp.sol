@@ -199,4 +199,46 @@ contract BankDapp {
         }
         return 3;
     }
+
+    /**
+     * Creates loan for user with provided wallet address
+     */
+    function takeLoan(
+        address walletAddress,
+        uint256 loanAmount,
+        uint256 amountToBePaid,
+        uint256 installmentAmount,
+        uint256 interest,
+        uint256 installmentsNumber,
+        uint256 loanStartDate
+    ) public forBorrower(walletAddress) {
+        require(canTakeLoan(walletAddress) == true, "You cannot take loan!");
+        require(
+            applicationBalance >= loanAmount,
+            "Not enough money in application!"
+        );
+
+        loans[walletAddress] = Loan(
+            loanAmount,
+            amountToBePaid,
+            amountToBePaid,
+            interest,
+            installmentAmount,
+            installmentsNumber,
+            installmentsNumber,
+            loanStartDate,
+            loanStartDate + DAY
+        );                                                 //Create loan
+
+        borrowers[walletAddress].balance += loanAmount;    //Transfer funds to borrowers balance
+        borrowers[walletAddress].isLoanTaken = true;       //Set is loan taken flag to true
+        applicationBalance -= loanAmount;                  //Substract loan amount from application balance
+    }
+
+    /**
+     * Returns true if borrower has not any active loans
+     */
+    function canTakeLoan(address walletAddress) internal view returns (bool) {
+        return (borrowers[walletAddress].isLoanTaken == false) ? true : false;
+    }
 }
