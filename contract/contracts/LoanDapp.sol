@@ -6,7 +6,6 @@ pragma solidity >=0.7.0 <0.9.0;
  * @title Loan decentralized appplication
  */
 contract BankDapp {
-
     /**
      * 1 Ether value
      */
@@ -38,7 +37,7 @@ contract BankDapp {
     mapping(address => Borrower) private borrowers;
 
     constructor() payable {
-        ownerAddress = msg.sender;      //Assign contract deployer address as owner address
+        ownerAddress = msg.sender; //Assign contract deployer address as owner address
         applicationBalance = msg.value; //Assign application balance with transaction ether value
     }
 
@@ -92,6 +91,40 @@ contract BankDapp {
      * Deposits funds in the application balance
      */
     function depositToDapp() public payable forOwner {
-        applicationBalance += msg.value;  //Adding transaction money to the application balance
+        applicationBalance += msg.value; //Adding transaction money to the application balance
     }
+
+    /**
+     * Retrieves actual balance for user with provided address
+     */
+    function getBorrowerInfo(address walletAddress)
+        public
+        view
+        forBorrower(walletAddress)
+        returns (
+            string memory,
+            string memory,
+            uint256
+        )
+    {
+        return (
+            borrowers[walletAddress].firstName,
+            borrowers[walletAddress].lastName,
+            borrowers[walletAddress].balance
+        );
+    }
+
+    /**
+     * Retrieves actual loan information for borrower with provided wallet address
+     */
+    function getBorrowersLoanInfo(address walletAddress)
+        public
+        view
+        forBorrower(walletAddress)
+        returns (Loan memory)
+    {
+        return loans[walletAddress];
+    }
+
+    
 }
