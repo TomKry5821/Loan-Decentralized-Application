@@ -23,5 +23,3 @@ contract BankDapp {
         //Assign application balance with transaction ether value
         applicationBalance = msg.value;
     }
-
-}
