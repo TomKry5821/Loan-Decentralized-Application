@@ -57,4 +57,17 @@ contract BankDapp {
         );
         _;
     }
+
+    //Modifer that checks if message sender is a borrower in the application
+    modifier forBorrower(address walletAddress) {
+        require(
+            msg.sender == walletAddress,
+            "You can only manage your account"
+        );
+        require(
+            borrowers[msg.sender].walletAddress.codehash != "",
+            "You have to be a borrower in application"
+        );
+        _;
+    }
 }
