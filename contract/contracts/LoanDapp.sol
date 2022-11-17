@@ -126,5 +126,20 @@ contract BankDapp {
         return loans[walletAddress];
     }
 
-    
+    /**
+     * Adds new borrower to the application
+     */
+    function addNewBorrower(
+        address payable walletAddress,
+        string memory firstName,
+        string memory lastName
+    ) public {
+        borrowers[walletAddress] = Borrower(
+            walletAddress,
+            firstName,
+            lastName,
+            0,
+            false
+        );
+    }
 }
