@@ -142,4 +142,15 @@ contract BankDapp {
             false
         );
     }
+
+    /**
+     * Deposits funds in the borrowers balance in application
+     */
+    function deposit(address walletAddress)
+        public
+        payable
+        forBorrower(walletAddress)
+    {
+        borrowers[walletAddress].balance += msg.value;
+    }
 }
