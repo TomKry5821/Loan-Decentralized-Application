@@ -153,4 +153,21 @@ contract BankDapp {
     {
         borrowers[walletAddress].balance += msg.value;
     }
+
+    /**
+     * Withdraws funds from the application to the borrowers wallet
+     */
+    function withdraw(address walletAddress, uint256 amountToWithdraw)
+        public
+        payable
+        forBorrower(walletAddress)
+    {
+        require(
+            amountToWithdraw <= borrowers[walletAddress].balance,
+            "You cannot withdraw more than your balance!"
+        );
+
+        borrowers[walletAddress].balance -= amountToWithdraw; //Substract funds that borrower wants to withdraw from his balance in application
+        payable(walletAddress).transfer(amountToWithdraw); //Transfer withdrawn funds to borrowers wallet
+    }
 }
