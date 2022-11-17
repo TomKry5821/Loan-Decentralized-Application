@@ -70,4 +70,10 @@ contract BankDapp {
         );
         _;
     }
+
+    //Deposits funds in the application balance
+    function depositToDapp() public payable forOwner {
+        //Adding transaction money to the application balance
+        applicationBalance += msg.value;
+    }
 }
