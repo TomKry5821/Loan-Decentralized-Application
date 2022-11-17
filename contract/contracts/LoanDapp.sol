@@ -170,4 +170,33 @@ contract BankDapp {
         borrowers[walletAddress].balance -= amountToWithdraw; //Substract funds that borrower wants to withdraw from his balance in application
         payable(walletAddress).transfer(amountToWithdraw); //Transfer withdrawn funds to borrowers wallet
     }
+
+    /**
+     * Calculates interest for loan with provided loan amount and installments number
+     */
+    function calculateInterestInPercent(
+        uint256 loanAmount,
+        uint256 installmentsNumber
+    ) public pure returns (uint256) {
+        if (loanAmount < ETHER) {
+            return 25;
+        } else if (loanAmount >= ETHER && installmentsNumber > 20) {
+            return 20;
+        } else if (
+            loanAmount >= ETHER &&
+            installmentsNumber <= 20 &&
+            installmentsNumber > 10
+        ) {
+            return 15;
+        } else if (
+            loanAmount >= ETHER &&
+            installmentsNumber <= 10 &&
+            installmentsNumber > 2
+        ) {
+            return 10;
+        } else if (loanAmount >= 10 * ETHER && installmentsNumber > 20) {
+            return 5;
+        }
+        return 3;
+    }
 }
