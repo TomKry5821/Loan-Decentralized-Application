@@ -228,11 +228,11 @@ contract BankDapp {
             installmentsNumber,
             loanStartDate,
             loanStartDate + DAY
-        );                                                 //Create loan
+        ); //Create loan
 
-        borrowers[walletAddress].balance += loanAmount;    //Transfer funds to borrowers balance
-        borrowers[walletAddress].isLoanTaken = true;       //Set is loan taken flag to true
-        applicationBalance -= loanAmount;                  //Substract loan amount from application balance
+        borrowers[walletAddress].balance += loanAmount; //Transfer funds to borrowers balance
+        borrowers[walletAddress].isLoanTaken = true; //Set is loan taken flag to true
+        applicationBalance -= loanAmount; //Substract loan amount from application balance
     }
 
     /**
@@ -240,5 +240,43 @@ contract BankDapp {
      */
     function canTakeLoan(address walletAddress) internal view returns (bool) {
         return (borrowers[walletAddress].isLoanTaken == false) ? true : false;
+    }
+
+    /**
+     * Transfers installment from the borrowers balance to the application balance
+     */
+    function payInstallment(address walletAddress)
+        public
+        forBorrower(walletAddress)
+    {
+        require(
+            borrowers[walletAddress].isLoanTaken == true,
+            "Any loan has not been taken for account"
+        );
+        require(
+            borrowers[walletAddress].balance >=
+                loans[walletAddress].installmentAmount,
+            "Not enough money at account balance!"
+        );
+
+        uint256 installmentAmount = loans[walletAddress].installmentAmount; //Assign installment amount to local variable
+        borrowers[walletAddress].balance -= installmentAmount; //Substract installment amount from borrower balance
+        loans[walletAddress].remaingAmountToPay -= installmentAmount; //Update remaining amount to be paid
+        loans[walletAddress].nextInstallmentDate += DAY; //Update next installment date
+        loans[walletAddress].remainingInstallments -= 1; //Update remaining installments number
+        applicationBalance += installmentAmount; //Add installment amount to the application balance
+
+        if (loans[walletAddress].remainingInstallments == 0) {
+            //Close loan if borrower paid last installment
+            closeLoan(walletAddress);
+        }
+    }
+
+    /**
+     * Closes loan of borrower with provided wallet address
+     */
+    function closeLoan(address walletAddress) internal {
+        borrowers[walletAddress].isLoanTaken = false; //Set is loan taken flag to false
+        delete loans[walletAddress]; //Remove loan from map
     }
 }
