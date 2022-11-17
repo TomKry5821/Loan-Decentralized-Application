@@ -19,6 +19,9 @@ contract BankDapp {
     //Map that contains users loans with borrower wallet address as key
     mapping(address => Loan) private loans;
 
+    //Map that contains application users - borrowers with they wallet address as key
+    mapping(address => Borrower) private borrowers;
+
     constructor() payable {
         //Assign contract deployer address as owner address
         ownerAddress = msg.sender;
@@ -36,5 +39,13 @@ contract BankDapp {
         uint256 remainingInstallments;
         uint256 loanStartDate;
         uint256 nextInstallmentDate;
+    }
+
+    struct Borrower {
+        address payable walletAddress;
+        string firstName;
+        string lastName;
+        uint256 balance;
+        bool isLoanTaken;
     }
 }
