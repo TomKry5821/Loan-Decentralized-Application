@@ -5,7 +5,7 @@ pragma solidity >=0.7.0 <0.9.0;
 /**
  * @title Loan decentralized appplication
  */
-contract BankDapp {
+contract LoanDapp {
     /**
      * 1 Ether value
      */
