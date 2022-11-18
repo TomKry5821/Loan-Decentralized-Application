@@ -13,9 +13,12 @@ import {
   HamburgerIcon,
   CloseIcon,
 } from '@chakra-ui/icons';
+import { useContext } from 'react';
+import { BlockchainContext } from '../context/BlockchainContext';
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
+  const { connectWallet, currentAccount } = useContext(BlockchainContext)
 
   return (
     <Box>
@@ -60,6 +63,7 @@ export default function Navbar() {
           direction={'row'}
           spacing={6}>
           <Button
+            onClick={connectWallet}
             display={{ base: 'none', md: 'inline-flex' }}
             fontSize={'sm'}
             fontWeight={600}
@@ -69,7 +73,7 @@ export default function Navbar() {
             _hover={{
               bg: 'blue.300',
             }}>
-            Connect wallet
+            {!currentAccount ? "Connect Wallet" : `${currentAccount.slice(0, 5)}...${currentAccount.slice(currentAccount.length - 4)}`}
           </Button>
         </Stack>
       </Flex>
