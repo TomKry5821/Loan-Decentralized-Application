@@ -1,7 +1,13 @@
+import { Stack } from "@chakra-ui/react"
+import CurrentTotals from "./CurrentTotals"
+import LoanOptions from "./LoanOptions"
 
 const Dashboard = () => {
     return (
-        <h1>TESdfdfdfvdT</h1>
+        <Stack>
+            <CurrentTotals />
+            <LoanOptions />
+        </Stack>
     )
 }
 
