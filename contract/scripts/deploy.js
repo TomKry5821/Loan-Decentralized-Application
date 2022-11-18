@@ -9,15 +9,15 @@ const hre = require("hardhat");
 async function main() {
   const currentTimestampInSeconds = Math.round(Date.now() / 1000);
 
-  const etherAmount = hre.ethers.utils.parseEther("10");
+  const etherAmount = hre.ethers.utils.parseEther("7000");
 
   const LoanDapp = await hre.ethers.getContractFactory("LoanDapp");
-  const loan = await LoanDapp.deploy(currentTimestampInSeconds, { value: etherAmount });
+  const loan = await LoanDapp.deploy({ value: etherAmount });
 
   await loan.deployed();
 
   console.log(
-    `LoanDapp with 10 ETH and timestamp ${currentTimestampInSeconds} deployed to ${loan.address}`
+    `LoanDapp with 7000 ETH and timestamp ${currentTimestampInSeconds} deployed to ${loan.address}`
   );
 }
 
