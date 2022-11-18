@@ -9,16 +9,16 @@ import {
   useColorModeValue,
   createIcon,
 } from '@chakra-ui/react';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function CallToActionWithAnnotation() {
   let navigate = useNavigate();
-  
+
   const handleClick = (path) => {
     navigate(path);
   }
-  
-    return (
+
+  return (
     <>
 
       <Container maxW={'3xl'}>
@@ -37,7 +37,7 @@ export default function CallToActionWithAnnotation() {
             </Text>
           </Heading>
           <Text color={'gray.500'}>
-            Connect your wallet, choose the best loan option for you and enjoy the extra crypto-funds! 
+            Connect your wallet, choose the best loan option for you and enjoy the extra crypto-funds!
           </Text>
           <Stack
             direction={'column'}
@@ -46,7 +46,7 @@ export default function CallToActionWithAnnotation() {
             alignSelf={'center'}
             position={'relative'}>
             <Button
-            onClick={() => handleClick('dashboard')}
+              onClick={() => handleClick('dashboard')}
               colorScheme={'green'}
               bg={'blue.400'}
               rounded={'full'}

@@ -18,7 +18,7 @@ export default function LoanOptions() {
                     <Heading size='md'> 10ETH in 24 installments with an interest rate of 10% </Heading>
                 </CardHeader>
                 <CardBody align='center'>
-                <Image
+                    <Image
                         objectFit='cover'
                         src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtxGNalqX4VVqAVINE7ociLsO_hlrG3_D8g&usqp=CAU'
                         borderRadius='lg'
@@ -50,7 +50,7 @@ export default function LoanOptions() {
                     <Heading size='md'> 100ETH in 72 installments with an interest rate of 2%</Heading>
                 </CardHeader>
                 <CardBody align='center'>
-                <Image
+                    <Image
                         objectFit='cover'
                         src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOdkM533-26FceqRKVlsqpnZnjBMkJg-Es2w&usqp=CAU'
                         borderRadius='lg'
