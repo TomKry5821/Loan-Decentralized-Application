@@ -24,32 +24,32 @@ export default function AddToBalanceForm() {
 
     return (
         <Flex justifyContent={'center'} alignItems={'center'} p={5} mt={10}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Text
-            fontFamily={'heading'}
-            fontSize={'x-large'}
-            fontWeight={600}
-            mb={4}>
-                Add funds To Your Account
-            </Text>
-            <FormControl isInvalid={errors.creditbalance}>
-                <Input
-                    id='creditbalance'
-                    type="number"
-                    step="any"
-                    placeholder='Credit balance'
-                    {...register('creditbalance', {
-                        required: 'This is required'
-                    })}
-                />
-                <FormErrorMessage>
-                    {errors.creditbalance && errors.creditbalance.message}
-                </FormErrorMessage>
-            </FormControl>
-            <Button mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
-                Add
-            </Button>
-        </form>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Text
+                    fontFamily={'heading'}
+                    fontSize={'x-large'}
+                    fontWeight={600}
+                    mb={4}>
+                    Add funds To Your Account
+                </Text>
+                <FormControl isInvalid={errors.creditbalance}>
+                    <Input
+                        id='creditbalance'
+                        type="number"
+                        step="any"
+                        placeholder='Credit balance'
+                        {...register('creditbalance', {
+                            required: 'This is required'
+                        })}
+                    />
+                    <FormErrorMessage>
+                        {errors.creditbalance && errors.creditbalance.message}
+                    </FormErrorMessage>
+                </FormControl>
+                <Button mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
+                    Add
+                </Button>
+            </form>
         </Flex>
     )
 }

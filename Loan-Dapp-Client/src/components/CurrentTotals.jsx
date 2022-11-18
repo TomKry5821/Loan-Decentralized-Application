@@ -16,6 +16,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddToBalanceForm from './AddToBalanceForm';
 import PayInstallmentForm from './PayInstallmentform';
+import { BlockchainContext } from '../context/BlockchainContext';
 
 function StatsCard(props) {
     const { title, stat, icon, bgColor } = props;
@@ -49,7 +50,7 @@ function StatsCard(props) {
 }
 
 export default function CurrentTotals() {
-    //const { renterBalance, due, duration, renter } = useContext(BlockchainContext);
+    const { borrowerBalance, due, duration, renter } = useContext(BlockchainContext);
     return (
         <>
             <Box maxW="7xl" mx={'auto'} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
@@ -63,7 +64,7 @@ export default function CurrentTotals() {
                 <SimpleGrid columns={{ base: 1, md: 6 }} spacing={{ base: 5, lg: 8 }}>
                     <StatsCard
                         title={'Ethereum funds balance'}
-                        stat={0.00}
+                        stat={borrowerBalance}
                         icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
                     />
                     <StatsCard

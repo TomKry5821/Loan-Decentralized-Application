@@ -5,7 +5,7 @@ pragma solidity >=0.7.0 <0.9.0;
 /**
  * @title Loan decentralized appplication
  */
-contract BankDapp {
+contract LoanDapp {
     /**
      * 1 Ether value
      */
@@ -97,21 +97,15 @@ contract BankDapp {
     /**
      * Retrieves actual balance for user with provided address
      */
-    function getBorrowerInfo(address walletAddress)
+    function getBorrowerBalance(address walletAddress)
         public
         view
         forBorrower(walletAddress)
         returns (
-            string memory,
-            string memory,
             uint256
         )
     {
-        return (
-            borrowers[walletAddress].firstName,
-            borrowers[walletAddress].lastName,
-            borrowers[walletAddress].balance
-        );
+        return borrowers[walletAddress].balance;
     }
 
     /**
