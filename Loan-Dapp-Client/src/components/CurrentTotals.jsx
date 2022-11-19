@@ -90,8 +90,8 @@ export default function CurrentTotals() {
                             icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
                         />
                         <StatsCard
-                            stat={canTakeLoan? 'Loan active' : 'Loan inactive'}
-                            bgColor={canTakeLoan? 'green.300' : 'red.300'}
+                            stat={!canTakeLoan? 'Loan active' : 'Loan inactive'}
+                            bgColor={!canTakeLoan? 'green.300' : 'red.300'}
                             icon={<FiCheck size={'3em'} />}
                         />
                         <StatsCard
