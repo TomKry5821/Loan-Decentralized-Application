@@ -9,7 +9,7 @@ export const BlockchainProvider = ({ children }) => {
     const [currentAccount, setCurrentAccount] = useState("");
     //const [balance, setBalance] = useState()
     const [borrowerExists, setBorrowerExists] = useState()
-    //const [renter, setRenter] = useState()
+    const [borrower, setBorrower] = useState()
     const [borrowerBalance, setBorrowerBalance] = useState()
     //const [due, setDue] = useState()
     //const [duration, setDuration] = useState()
@@ -50,15 +50,40 @@ export const BlockchainProvider = ({ children }) => {
     }
 
     const getBorrowerExists = async () => {
-        try{
-            if(currentAccount){
+        try {
+            if (currentAccount) {
                 const exists = await contract.borrowerExists(currentAccount)
                 setBorrowerExists(exists)
+                if (exists) {
+                    await getBorrowerInfo();
+                }
             }
 
         } catch (error) {
             console.log(error)
             setBorrowerExists(false)
+        }
+    }
+
+    const getBorrowerInfo = async () => {
+        try {
+            if (currentAccount) {
+                const borrower = await contract.getBorrowerInfo(currentAccount)
+                setBorrower(borrower);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const addNewBorrower = async (walletAddress, firstName, lastName) => {
+        try {
+            const newBorrower = await contract.addNewBorrower(walletAddress, firstName, lastName)
+            await newBorrower.wait()
+            console.log(`${firstName} added!`)
+            getBorrowerExists()
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -89,7 +114,9 @@ export const BlockchainProvider = ({ children }) => {
                 connectWallet,
                 currentAccount,
                 borrowerBalance,
-                borrowerExists
+                borrowerExists,
+                borrower,
+                addNewBorrower
             }}>
             {children}
         </BlockchainContext.Provider>
