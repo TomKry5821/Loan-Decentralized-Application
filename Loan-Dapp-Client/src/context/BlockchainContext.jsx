@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { abi, contractAddress } from '../config.json'
 import { ethers } from "ethers"
 import { toast } from 'react-toastify';
-import { useRangeSlider } from '@chakra-ui/react';
 
 export const BlockchainContext = React.createContext("");
 
@@ -94,7 +93,7 @@ export const BlockchainProvider = ({ children }) => {
         try {
             if (currentAccount) {
                 const balance = await contract.getBorrowerBalance(currentAccount)
-                setBorrowerBalance(ethers.utils.formatEther(balance))
+                setBorrowerBalance(ethers.utils.formatEther(balance).toString().slice(0, 5))
             }
         } catch (error) {
             console.log(error)
@@ -170,6 +169,18 @@ export const BlockchainProvider = ({ children }) => {
         }
     }
 
+    const payInstallment = async (amountToPay) => {
+        try {
+            const payment = await contract.payInstallment(currentAccount, { value: amountToPay })
+            await payment.wait
+            alert("Installment paid successfully")
+            await getLoanInfo()
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     useEffect(() => {
         checkifWalletIsConnected()
@@ -198,7 +209,8 @@ export const BlockchainProvider = ({ children }) => {
                 installmentAmount,
                 interest,
                 remainingInstallments,
-                nextInstallmentDueDate
+                nextInstallmentDueDate,
+                payInstallment
             }}>
             {children}
         </BlockchainContext.Provider>
