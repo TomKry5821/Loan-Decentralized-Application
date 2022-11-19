@@ -83,7 +83,7 @@ export default function CurrentTotals() {
                         fontWeight={'bold'}>
                         Welcome! Here are your stats:
                     </chakra.h1>
-                    <SimpleGrid columns={{ base: 1, md: 6 }} spacing={{ base: 5, lg: 8 }}>
+                    <SimpleGrid columns={{ base: 2, md: 3 }} spacing={{ base: 5, lg: 8 }}>
                         <StatsCard
                             title={'Ethereum funds balance'}
                             stat={borrowerBalance}
