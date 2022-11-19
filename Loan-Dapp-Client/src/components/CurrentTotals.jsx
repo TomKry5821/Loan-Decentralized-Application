@@ -19,6 +19,7 @@ import AddToBalanceForm from './AddToBalanceForm';
 import PayInstallmentForm from './PayInstallmentform';
 import AddBorrowerForm from './AddBorrowerForm';
 import { BlockchainContext } from '../context/BlockchainContext';
+import WithdrawForm from './WithdrawForm';
 
 function StatsCard(props) {
     const { title, stat, icon, bgColor } = props;
@@ -118,6 +119,7 @@ export default function CurrentTotals() {
                     </SimpleGrid>
                     <Flex justifyContent={'center'} alignItems={'center'}>
                         <AddToBalanceForm />
+                        <WithdrawForm />
                         <PayInstallmentForm />
                     </Flex>
                 </Box>
