@@ -8,12 +8,10 @@ export const BlockchainContext = React.createContext("");
 export const BlockchainProvider = ({ children }) => {
     const [currentAccount, setCurrentAccount] = useState("");
     const [canTakeLoan, setCanTakeLoan] = useState()
-    //const [balance, setBalance] = useState()
     const [borrowerExists, setBorrowerExists] = useState()
     const [borrower, setBorrower] = useState()
     const [borrowerBalance, setBorrowerBalance] = useState()
-    //const [due, setDue] = useState()
-    //const [duration, setDuration] = useState()
+    const [loan, setLoan] = useState()
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
@@ -137,6 +135,31 @@ export const BlockchainProvider = ({ children }) => {
         }
     }
 
+    const takeLoan = async (amount, installmentsNumber, interest) => {
+        try {
+            const weiValue = ethers.utils.parseEther(amount.toString());
+            const amountToBePaid = weiValue + (weiValue * (interest / 100))
+            const loanStartDate = Date.now()
+            console.log(weiValue + " " + amountToBePaid)
+            const newLoan = await contract.takeLoan(currentAccount, weiValue, amountToBePaid, interest, installmentsNumber, loanStartDate)
+            await newLoan.wait
+            alert("Loan took successfully!")
+            await getBorrowerBalance()
+            //await getLoanInfo()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getLoanInfo = async () => {
+        try {
+            const loan = await contract.getBorrowersLoanInfo(currentAccount)
+            setLoan(loan)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     useEffect(() => {
         checkifWalletIsConnected()
@@ -144,6 +167,7 @@ export const BlockchainProvider = ({ children }) => {
         getBorrowerInfo()
         getBorrowerExists()
         getCanTakeLoan()
+        getLoanInfo()
     }, [currentAccount])
 
 
@@ -159,7 +183,9 @@ export const BlockchainProvider = ({ children }) => {
                 addNewBorrower,
                 canTakeLoan,
                 deposit,
-                withdraw
+                withdraw,
+                loan,
+                takeLoan
             }}>
             {children}
         </BlockchainContext.Provider>
