@@ -229,7 +229,6 @@ contract LoanDapp {
         address walletAddress,
         uint256 loanAmount,
         uint256 amountToBePaid,
-        uint256 installmentAmount,
         uint256 interest,
         uint256 installmentsNumber,
         uint256 loanStartDate
@@ -239,6 +238,8 @@ contract LoanDapp {
             applicationBalance >= loanAmount,
             "Not enough money in application!"
         );
+
+        uint installmentAmount = loanAmount / installmentsNumber;
 
         loans[walletAddress] = Loan(
             loanAmount,
