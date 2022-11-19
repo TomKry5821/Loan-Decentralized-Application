@@ -95,6 +95,13 @@ contract LoanDapp {
     }
 
     /**
+     * Checks if user with provided wallet address is in borrowers mapping    
+     */
+    function borrowerExists(address walletAddress) public view returns(bool) {
+        return (borrowers[walletAddress].walletAddress.codehash != "")? true : false;
+    }
+
+    /**
      * Retrieves actual balance for user with provided address
      */
     function getBorrowerBalance(address walletAddress)
