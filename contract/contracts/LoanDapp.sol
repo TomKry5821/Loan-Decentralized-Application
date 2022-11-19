@@ -189,7 +189,7 @@ contract LoanDapp {
     /**
      * Returns true if borrower has not any active loans
      */
-    function canTakeLoan(address walletAddress) internal view returns (bool) {
+    function canTakeLoan(address walletAddress) public view returns (bool) {
         return (borrowers[walletAddress].isLoanTaken == false) ? true : false;
     }
 
