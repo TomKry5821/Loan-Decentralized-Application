@@ -113,6 +113,17 @@ export const BlockchainProvider = ({ children }) => {
 
     }
 
+    const deposit = async (value) => {
+        try {
+            const weiValue = ethers.utils.parseEther(value);
+            const deposit = await contract.deposit(currentAccount, { value: weiValue })
+            await deposit.wait()
+            await getBorrowerBalance();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     useEffect(() => {
         checkifWalletIsConnected()
@@ -132,7 +143,8 @@ export const BlockchainProvider = ({ children }) => {
                 borrowerExists,
                 borrower,
                 addNewBorrower,
-                canTakeLoan
+                canTakeLoan,
+                deposit
             }}>
             {children}
         </BlockchainContext.Provider>
