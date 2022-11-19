@@ -103,8 +103,8 @@ export const BlockchainProvider = ({ children }) => {
     const getCanTakeLoan = async () => {
         try {
             if (currentAccount) {
-                const cantTakeLoan = await contract.canTakeLoan(currentAccount)
-                setCanTakeLoan(cantTakeLoan)
+                const canTake = await contract.canTakeLoan(currentAccount)
+                setCanTakeLoan(canTake)
             }
         } catch (error) {
             console.log(error)
@@ -127,7 +127,6 @@ export const BlockchainProvider = ({ children }) => {
     const withdraw = async (value) => {
         try {
             const weiValue = ethers.utils.parseUnits(value.toString(), "ether")
-            console.log(weiValue.toString())
             const withdraw = await contract.withdraw(currentAccount, weiValue)
             await withdraw.wait();
             await getBorrowerBalance();
@@ -142,6 +141,7 @@ export const BlockchainProvider = ({ children }) => {
     useEffect(() => {
         checkifWalletIsConnected()
         getBorrowerBalance()
+        getBorrowerInfo()
         getBorrowerExists()
         getCanTakeLoan()
     }, [currentAccount])
