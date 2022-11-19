@@ -117,7 +117,7 @@ contract LoanDapp {
     /**
      * Retrieves Borrowers basic info
      */
-    function getBorrowersInfo(address borrowerAddress)
+    function getBorrowerInfo(address borrowerAddress)
         public
         view
         forBorrower(borrowerAddress)
@@ -185,7 +185,7 @@ contract LoanDapp {
     {
         return loans[walletAddress];
     }
-    
+
     /**
      * Returns true if borrower has not any active loans
      */
