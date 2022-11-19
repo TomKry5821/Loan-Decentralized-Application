@@ -9,9 +9,12 @@ import {
     CardFooter,
     Image
 } from '@chakra-ui/react';
+import { useContext } from 'react';
+import { BlockchainContext } from '../context/BlockchainContext';
 
 export default function LoanOptions() {
-    return (
+    const { takeLoan, canTakeLoan } = useContext(BlockchainContext)
+    return canTakeLoan ? (
         <SimpleGrid spacing={4} templateColumns='repeat(3, minmax(150px, 1fr))'>
             <Card>
                 <CardHeader>
@@ -26,7 +29,11 @@ export default function LoanOptions() {
                     />
                 </CardBody>
                 <CardFooter>
-                    <Button>View here</Button>
+                    <Button
+                        onClick={() => takeLoan(10, 24, 10)}
+                    >
+                        Take Loan
+                    </Button>
                 </CardFooter>
             </Card>
             <Card>
@@ -42,7 +49,7 @@ export default function LoanOptions() {
                     />
                 </CardBody>
                 <CardFooter>
-                    <Button>View here</Button>
+                    <Button>Take Loan</Button>
                 </CardFooter>
             </Card>
             <Card>
@@ -58,9 +65,9 @@ export default function LoanOptions() {
                     />
                 </CardBody>
                 <CardFooter>
-                    <Button>View here</Button>
+                    <Button>Take Loan</Button>
                 </CardFooter>
             </Card>
         </SimpleGrid>
-    );
+    ) : (<></>);
 }
