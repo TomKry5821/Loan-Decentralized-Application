@@ -275,7 +275,7 @@ contract LoanDapp {
             "Not enough money in application!"
         );
 
-        uint installmentAmount = loanAmount / installmentsNumber;
+        uint installmentAmount = amountToBePaid / installmentsNumber;
 
         loans[walletAddress] = Loan(
             loanAmount,
