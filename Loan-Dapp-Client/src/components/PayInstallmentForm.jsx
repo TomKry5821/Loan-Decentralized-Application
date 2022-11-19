@@ -11,17 +11,17 @@ import { useContext } from 'react'
 import { BlockchainContext } from '../context/BlockchainContext'
 
 export default function PayInstallmentForm() {
-    const { makePayment, canTakeLoan } = useContext(BlockchainContext)
+    const { payInstallment, canTakeLoan, installmentAmount} = useContext(BlockchainContext)
     const {
         handleSubmit,
         register,
-        formState: { errors, isSubmitting },
+        formState: {isSubmitting },
     } = useForm()
 
-    const onSubmit = async (values) => {
-        console.log(JSON.stringify(values, null, 2))
-        //const { payment } = values;
-        // await makePayment(payment)
+    const onSubmit = async () => {
+        console.log(JSON.stringify(installmentAmount, null, 2))
+        const { payment } = installmentAmount;
+        await payInstallment(payment)
     }
 
     return !canTakeLoan ? (
@@ -34,20 +34,6 @@ export default function PayInstallmentForm() {
                     mb={4}>
                     Pay Installment
                 </Text>
-                <FormControl isInvalid={errors.payment}>
-                    <Input
-                        id='payment'
-                        type="number"
-                        step="any"
-                        placeholder='Payment'
-                        {...register('payment', {
-                            required: 'This is required'
-                        })}
-                    />
-                    <FormErrorMessage>
-                        {errors.payment && errors.payment.message}
-                    </FormErrorMessage>
-                </FormControl>
                 <Button mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
                     Pay
                 </Button>
