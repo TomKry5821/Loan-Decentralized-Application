@@ -124,6 +124,20 @@ export const BlockchainProvider = ({ children }) => {
         }
     }
 
+    const withdraw = async (value) => {
+        try {
+            const weiValue = ethers.utils.parseUnits(value.toString(), "ether")
+            console.log(weiValue.toString())
+            const withdraw = await contract.withdraw(currentAccount, weiValue)
+            await withdraw.wait();
+            await getBorrowerBalance();
+
+        } catch (error) {
+            console.log(error)
+            alert("You cannot withdraw more than you have on your balance")
+        }
+    }
+
 
     useEffect(() => {
         checkifWalletIsConnected()
@@ -144,7 +158,8 @@ export const BlockchainProvider = ({ children }) => {
                 borrower,
                 addNewBorrower,
                 canTakeLoan,
-                deposit
+                deposit,
+                withdraw
             }}>
             {children}
         </BlockchainContext.Provider>
