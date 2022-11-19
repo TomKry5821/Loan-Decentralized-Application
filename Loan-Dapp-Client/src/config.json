@@ -1,236 +1,303 @@
 {
-    "abi": [
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "payable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
         {
-          "inputs": [],
-          "stateMutability": "payable",
-          "type": "constructor"
+          "internalType": "address payable",
+          "name": "walletAddress",
+          "type": "address"
         },
         {
-          "inputs": [
-            {
-              "internalType": "address payable",
-              "name": "walletAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "firstName",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "lastName",
-              "type": "string"
-            }
-          ],
-          "name": "addNewBorrower",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
+          "internalType": "string",
+          "name": "firstName",
+          "type": "string"
         },
         {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "loanAmount",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "installmentsNumber",
-              "type": "uint256"
-            }
-          ],
-          "name": "calculateInterestInPercent",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "walletAddress",
-              "type": "address"
-            }
-          ],
-          "name": "deposit",
-          "outputs": [],
-          "stateMutability": "payable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "depositToDapp",
-          "outputs": [],
-          "stateMutability": "payable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "walletAddress",
-              "type": "address"
-            }
-          ],
-          "name": "getBorrowerBalance",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "walletAddress",
-              "type": "address"
-            }
-          ],
-          "name": "getBorrowersLoanInfo",
-          "outputs": [
-            {
-              "components": [
-                {
-                  "internalType": "uint256",
-                  "name": "loanAmount",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "amountToBePaid",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "remaingAmountToPay",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "interest",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "installmentAmount",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "installmentsNumber",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "remainingInstallments",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "loanStartDate",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "nextInstallmentDate",
-                  "type": "uint256"
-                }
-              ],
-              "internalType": "struct LoanDapp.Loan",
-              "name": "",
-              "type": "tuple"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "walletAddress",
-              "type": "address"
-            }
-          ],
-          "name": "payInstallment",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "walletAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "loanAmount",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "amountToBePaid",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "installmentAmount",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "interest",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "installmentsNumber",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "loanStartDate",
-              "type": "uint256"
-            }
-          ],
-          "name": "takeLoan",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "walletAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "amountToWithdraw",
-              "type": "uint256"
-            }
-          ],
-          "name": "withdraw",
-          "outputs": [],
-          "stateMutability": "payable",
-          "type": "function"
+          "internalType": "string",
+          "name": "lastName",
+          "type": "string"
         }
       ],
-    "contractAddress": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+      "name": "addNewBorrower",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        }
+      ],
+      "name": "borrowerExists",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "loanAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "installmentsNumber",
+          "type": "uint256"
+        }
+      ],
+      "name": "calculateInterestInPercent",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        }
+      ],
+      "name": "canTakeLoan",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        }
+      ],
+      "name": "deposit",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "depositToDapp",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getBorrowerBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "borrowerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getBorrowerInfo",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "firstName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "lastName",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getBorrowersInstallmentAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getBorrowersInterest",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getBorrowersNextInstallmentDate",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getBorrowersRemainingInstallmentNumber",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        }
+      ],
+      "name": "payInstallment",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "loanAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amountToBePaid",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "interest",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "installmentsNumber",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "loanStartDate",
+          "type": "uint256"
+        }
+      ],
+      "name": "takeLoan",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amountToWithdraw",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
 }
