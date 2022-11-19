@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form'
 import {
     FormErrorMessage,
-    FormLabel,
     FormControl,
     Input,
     Button,
@@ -9,9 +8,10 @@ import {
     Flex
 } from '@chakra-ui/react'
 import { useContext } from 'react'
+import { BlockchainContext } from '../context/BlockchainContext'
 
 export default function PayInstallmentForm() {
-    //const { makePayment } = useContext(BlockchainContext)
+    const { makePayment, canTakeLoan } = useContext(BlockchainContext)
     const {
         handleSubmit,
         register,
@@ -24,7 +24,7 @@ export default function PayInstallmentForm() {
         // await makePayment(payment)
     }
 
-    return (
+    return !canTakeLoan ? (
         <Flex justifyContent={'center'} alignItems={'center'} p={5} mt={10}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Text
@@ -53,5 +53,8 @@ export default function PayInstallmentForm() {
                 </Button>
             </form>
         </Flex>
-    )
+    ) : (
+        <>
+        </>
+    );
 }
