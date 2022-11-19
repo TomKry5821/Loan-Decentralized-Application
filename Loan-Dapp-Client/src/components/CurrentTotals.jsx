@@ -12,6 +12,7 @@ import { ReactNode, useContext } from 'react';
 import { RiMoneyDollarCircleLine } from 'react-icons/ri';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
+import { FiCheck } from "react-icons/fi";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddToBalanceForm from './AddToBalanceForm';
@@ -23,10 +24,10 @@ function StatsCard(props) {
     const { title, stat, icon, bgColor } = props;
     return (
         <Stat
-            px={{ base: 2, md: 4 }}
+            px={{ base: 1, md: 4 }}
             py={'5'}
             shadow={'xl'}
-            border={'1px solid'}
+            border={'5px solid'}
             borderColor={useColorModeValue('gray.800', 'gray.500')}
             rounded={'lg'}
             backgroundColor={bgColor}>
@@ -51,7 +52,7 @@ function StatsCard(props) {
 }
 
 export default function CurrentTotals() {
-    const { borrowerExists, borrowerBalance, due, duration, renter } = useContext(BlockchainContext);
+    const { borrowerExists, borrowerBalance, canTakeLoan } = useContext(BlockchainContext);
     if (!borrowerExists) {
         return (
             <>
@@ -88,29 +89,32 @@ export default function CurrentTotals() {
                             icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
                         />
                         <StatsCard
+                            stat={canTakeLoan? 'Loan active' : 'Loan inactive'}
+                            bgColor={canTakeLoan? 'green.300' : 'red.300'}
+                            icon={<FiCheck size={'3em'} />}
+                        />
+                        <StatsCard
                             title={'Next installment amount'}
-                            stat={0.00}
+                            stat={canTakeLoan? 0.00 : '-'}
                             icon={<RiMoneyDollarCircleLine size={'3em'} />}
                         />
                         <StatsCard
                             title={'Next installment due date'}
-                            stat={0}
+                            stat={canTakeLoan? 0.00 : '-'}
                             icon={<AiOutlineClockCircle size={'3em'} />}
                         />
                         <StatsCard
                             title={'Installment to pay number'}
-                            stat={0}
+                            stat={canTakeLoan? 0 : '-'}
                             icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
                         />
                         <StatsCard
                             title={'Loan interest rate'}
-                            stat={0 + '%'}
+                            stat={canTakeLoan? 0 + "%" : '-'}
                             icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
                         />
-                        <StatsCard
-                            title={'Loan Status'}
-                            bgColor={'green'}
-                        />
+                        :
+
                     </SimpleGrid>
                     <Flex justifyContent={'center'} alignItems={'center'}>
                         <AddToBalanceForm />
