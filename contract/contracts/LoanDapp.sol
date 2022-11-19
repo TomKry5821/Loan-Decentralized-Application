@@ -175,15 +175,51 @@ contract LoanDapp {
     }
 
     /**
-     * Retrieves actual loan information for borrower with provided wallet address
+     * Retrieves installment amount for borrower with provided wallet address
      */
-    function getBorrowersLoanInfo(address walletAddress)
+    function getBorrowersInstallmentAmount(address walletAddress)
         public
         view
         forBorrower(walletAddress)
-        returns (Loan memory)
+        returns (uint)
     {
-        return loans[walletAddress];
+        return loans[walletAddress].installmentAmount;
+    }
+
+    /**
+     * Retrieves next installment date for borrower with provided wallet address
+     */
+    function getBorrowersNextInstallmentDate(address walletAddress)
+        public
+        view
+        forBorrower(walletAddress)
+        returns (uint)
+    {
+        return loans[walletAddress].nextInstallmentDate;
+    }
+
+    /**
+     * Retrieves remaining installment number for borrower with provided wallet address
+     */
+    function getBorrowersRemainingInstallmentNumber(address walletAddress)
+        public
+        view
+        forBorrower(walletAddress)
+        returns (uint)
+    {
+        return loans[walletAddress].remainingInstallments;
+    }
+
+    /**
+     * Retrieves loan interest for borrower with provided wallet address
+     */
+    function getBorrowersInterest(address walletAddress)
+        public
+        view
+        forBorrower(walletAddress)
+        returns (uint)
+    {
+        return loans[walletAddress].interest;
     }
 
     /**
