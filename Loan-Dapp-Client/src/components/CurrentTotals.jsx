@@ -53,7 +53,7 @@ function StatsCard(props) {
 }
 
 export default function CurrentTotals() {
-    const { borrowerExists, borrowerBalance, canTakeLoan } = useContext(BlockchainContext);
+    const { borrowerExists, borrowerBalance, canTakeLoan, installmentAmount, interest, remainingInstallments, nextInstallmentDueDate } = useContext(BlockchainContext);
     if (!borrowerExists) {
         return (
             <>
@@ -96,22 +96,22 @@ export default function CurrentTotals() {
                         />
                         <StatsCard
                             title={'Next installment amount'}
-                            stat={canTakeLoan? 0.00 : '-'}
+                            stat={!canTakeLoan? installmentAmount : '-'}
                             icon={<RiMoneyDollarCircleLine size={'3em'} />}
                         />
                         <StatsCard
                             title={'Next installment due date'}
-                            stat={canTakeLoan? 0.00 : '-'}
+                            stat={!canTakeLoan? nextInstallmentDueDate : '-'}
                             icon={<AiOutlineClockCircle size={'3em'} />}
                         />
                         <StatsCard
                             title={'Installment to pay number'}
-                            stat={canTakeLoan? 0 : '-'}
+                            stat={!canTakeLoan? remainingInstallments : '-'}
                             icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
                         />
                         <StatsCard
                             title={'Loan interest rate'}
-                            stat={canTakeLoan? 0 + "%" : '-'}
+                            stat={!canTakeLoan? interest + "%" : '-'}
                             icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
                         />
                         :
