@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { abi, contractAddress } from '../config.json'
 import { ethers } from "ethers"
 import { toast } from 'react-toastify';
+import { useRangeSlider } from '@chakra-ui/react';
 
 export const BlockchainContext = React.createContext("");
 
@@ -11,7 +12,10 @@ export const BlockchainProvider = ({ children }) => {
     const [borrowerExists, setBorrowerExists] = useState()
     const [borrower, setBorrower] = useState()
     const [borrowerBalance, setBorrowerBalance] = useState()
-    const [loan, setLoan] = useState()
+    const [installmentAmount, setInstallmentAmount] = useState()
+    const [interest, setInterest] = useState()
+    const [remainingInstallments, setRemainingInstallments] = useState()
+    const [nextInstallmentDueDate, setNextInstallmentDueDate] = useState()
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
@@ -139,13 +143,12 @@ export const BlockchainProvider = ({ children }) => {
         try {
             const weiValue = ethers.utils.parseEther(amount.toString());
             const amountToBePaid = weiValue + (weiValue * (interest / 100))
-            const loanStartDate = Date.now()
-            console.log(weiValue + " " + amountToBePaid)
+            const loanStartDate = Math.floor(new Date(Date.now()).getTime() / 1000)
             const newLoan = await contract.takeLoan(currentAccount, weiValue, amountToBePaid, interest, installmentsNumber, loanStartDate)
             await newLoan.wait
             alert("Loan took successfully!")
             await getBorrowerBalance()
-            //await getLoanInfo()
+            await getLoanInfo()
         } catch (error) {
             console.log(error)
         }
@@ -153,8 +156,15 @@ export const BlockchainProvider = ({ children }) => {
 
     const getLoanInfo = async () => {
         try {
-            const loan = await contract.getBorrowersLoanInfo(currentAccount)
-            setLoan(loan)
+            const installmentAmount = await contract.getBorrowersInstallmentAmount(currentAccount)
+            setInstallmentAmount(ethers.utils.formatEther(installmentAmount).toString().slice(0, 5))
+            const interest = await contract.getBorrowersInterest(currentAccount)
+            setInterest(interest)
+            const remainingInstallments = await contract.getBorrowersRemainingInstallmentNumber(currentAccount)
+            setRemainingInstallments(remainingInstallments.toString())
+            const nextInstallmentDueDate = await contract.getBorrowersNextInstallmentDate(currentAccount)
+            const parsedDate = new Date(nextInstallmentDueDate * 1000)
+            setNextInstallmentDueDate(parsedDate.toISOString().slice(0, 10))
         } catch (error) {
             console.log(error)
         }
@@ -184,8 +194,11 @@ export const BlockchainProvider = ({ children }) => {
                 canTakeLoan,
                 deposit,
                 withdraw,
-                loan,
-                takeLoan
+                takeLoan,
+                installmentAmount,
+                interest,
+                remainingInstallments,
+                nextInstallmentDueDate
             }}>
             {children}
         </BlockchainContext.Provider>
