@@ -7,6 +7,7 @@ export const BlockchainContext = React.createContext("");
 
 export const BlockchainProvider = ({ children }) => {
     const [currentAccount, setCurrentAccount] = useState("");
+    const [canTakeLoan, setCanTakeLoan] = useState()
     //const [balance, setBalance] = useState()
     const [borrowerExists, setBorrowerExists] = useState()
     const [borrower, setBorrower] = useState()
@@ -65,23 +66,23 @@ export const BlockchainProvider = ({ children }) => {
         }
     }
 
-    const getBorrowerInfo = async () => {
-        try {
-            if (currentAccount) {
-                const borrower = await contract.getBorrowerInfo(currentAccount)
-                setBorrower(borrower);
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     const addNewBorrower = async (walletAddress, firstName, lastName) => {
         try {
             const newBorrower = await contract.addNewBorrower(walletAddress, firstName, lastName)
             await newBorrower.wait()
             console.log(`${firstName} added!`)
             getBorrowerExists()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getBorrowerInfo = async () => {
+        try {
+            if (currentAccount) {
+                const borrower = await contract.getBorrowerInfo(currentAccount)
+                setBorrower(borrower);
+            }
         } catch (error) {
             console.log(error)
         }
@@ -99,11 +100,25 @@ export const BlockchainProvider = ({ children }) => {
         }
     }
 
+    const getCanTakeLoan = async () => {
+        try {
+            if (currentAccount) {
+                const cantTakeLoan = await contract.canTakeLoan(currentAccount)
+                setCanTakeLoan(cantTakeLoan)
+            }
+        } catch (error) {
+            console.log(error)
+            setCanTakeLoan(false)
+        }
+
+    }
+
 
     useEffect(() => {
         checkifWalletIsConnected()
         getBorrowerBalance()
         getBorrowerExists()
+        getCanTakeLoan()
     }, [currentAccount])
 
 
@@ -116,7 +131,8 @@ export const BlockchainProvider = ({ children }) => {
                 borrowerBalance,
                 borrowerExists,
                 borrower,
-                addNewBorrower
+                addNewBorrower,
+                canTakeLoan
             }}>
             {children}
         </BlockchainContext.Provider>
