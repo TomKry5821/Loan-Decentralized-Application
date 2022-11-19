@@ -175,6 +175,10 @@ export const BlockchainProvider = ({ children }) => {
             await payment.wait
             alert("Installment paid successfully")
             await getLoanInfo()
+            await getBorrowerBalance()
+            if(remainingInstallments == 0){
+                alert("You have paid your loan. Congratulations!")
+            }
 
         } catch (error) {
             console.log(error)
