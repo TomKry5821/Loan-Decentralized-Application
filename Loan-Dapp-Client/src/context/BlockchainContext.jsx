@@ -8,7 +8,7 @@ export const BlockchainContext = React.createContext("");
 export const BlockchainProvider = ({ children }) => {
     const [currentAccount, setCurrentAccount] = useState("");
     //const [balance, setBalance] = useState()
-    //const [renterExists, setRenterExists] = useState()
+    const [borrowerExists, setBorrowerExists] = useState()
     //const [renter, setRenter] = useState()
     const [borrowerBalance, setBorrowerBalance] = useState()
     //const [due, setDue] = useState()
@@ -23,7 +23,7 @@ export const BlockchainProvider = ({ children }) => {
 
     const connectWallet = async () => {
         try {
-            if (!window.ethereum) return alert("Please install Metmask")
+            if (!window.ethereum) return alert("Please install Metamask")
 
             const accounts = await provider.send("eth_requestAccounts");
             console.log(accounts[0])
@@ -49,6 +49,19 @@ export const BlockchainProvider = ({ children }) => {
         }
     }
 
+    const getBorrowerExists = async () => {
+        try{
+            if(currentAccount){
+                const exists = await contract.borrowerExists(currentAccount)
+                setBorrowerExists(exists)
+            }
+
+        } catch (error) {
+            console.log(error)
+            setBorrowerExists(false)
+        }
+    }
+
     const getBorrowerBalance = async () => {
         try {
             if (currentAccount) {
@@ -65,6 +78,7 @@ export const BlockchainProvider = ({ children }) => {
     useEffect(() => {
         checkifWalletIsConnected()
         getBorrowerBalance()
+        getBorrowerExists()
     }, [currentAccount])
 
 
@@ -75,6 +89,7 @@ export const BlockchainProvider = ({ children }) => {
                 connectWallet,
                 currentAccount,
                 borrowerBalance,
+                borrowerExists
             }}>
             {children}
         </BlockchainContext.Provider>
