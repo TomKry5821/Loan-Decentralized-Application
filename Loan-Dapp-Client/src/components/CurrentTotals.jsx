@@ -16,6 +16,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddToBalanceForm from './AddToBalanceForm';
 import PayInstallmentForm from './PayInstallmentform';
+import AddBorrowerForm from './AddBorrowerForm';
 import { BlockchainContext } from '../context/BlockchainContext';
 
 function StatsCard(props) {
@@ -50,54 +51,75 @@ function StatsCard(props) {
 }
 
 export default function CurrentTotals() {
-    const { borrowerBalance, due, duration, renter } = useContext(BlockchainContext);
-    return (
-        <>
-            <Box maxW="7xl" mx={'auto'} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
-                <chakra.h1
-                    textAlign={'center'}
-                    fontSize={'4xl'}
-                    py={10}
-                    fontWeight={'bold'}>
-                    Welcome! Here are your stats:
-                </chakra.h1>
-                <SimpleGrid columns={{ base: 1, md: 6 }} spacing={{ base: 5, lg: 8 }}>
-                    <StatsCard
-                        title={'Ethereum funds balance'}
-                        stat={borrowerBalance}
-                        icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
-                    />
-                    <StatsCard
-                        title={'Next installment amount'}
-                        stat={0.00}
-                        icon={<RiMoneyDollarCircleLine size={'3em'} />}
-                    />
-                    <StatsCard
-                        title={'Next installment due date'}
-                        stat={0}
-                        icon={<AiOutlineClockCircle size={'3em'} />}
-                    />
-                    <StatsCard
-                        title={'Installment to pay number'}
-                        stat={0}
-                        icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
-                    />
-                    <StatsCard
-                        title={'Loan interest rate'}
-                        stat={0 + '%'}
-                        icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
-                    />
-                    <StatsCard
-                        title={'Loan Status'}
-                        bgColor={'green'}
-                    />
-                </SimpleGrid>
-                <Flex justifyContent={'center'} alignItems={'center'}>
-                    <AddToBalanceForm />
-                    <PayInstallmentForm />
-                </Flex>
-            </Box>
-            <ToastContainer autoClose={3000} />
-        </>
-    );
+    const { borrowerExists, borrowerBalance, due, duration, renter } = useContext(BlockchainContext);
+    if (!borrowerExists) {
+        return (
+            <>
+                <Box maxW="7xl" mx={'auto'} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
+                    <chakra.h1
+                        textAlign={'center'}
+                        fontSize={'4xl'}
+                        py={10}
+                        fontWeight={'bold'}>
+                        You need to be a borrower to see your stats
+                    </chakra.h1>
+                    <Flex justifyContent={'center'} alignItems={'center'}>
+                        <AddBorrowerForm />
+                    </Flex>
+                </Box>
+                <ToastContainer autoClose={3000} />
+            </>
+        );
+    } else {
+        return (
+            <>
+                <Box maxW="7xl" mx={'auto'} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
+                    <chakra.h1
+                        textAlign={'center'}
+                        fontSize={'4xl'}
+                        py={10}
+                        fontWeight={'bold'}>
+                        Welcome! Here are your stats:
+                    </chakra.h1>
+                    <SimpleGrid columns={{ base: 1, md: 6 }} spacing={{ base: 5, lg: 8 }}>
+                        <StatsCard
+                            title={'Ethereum funds balance'}
+                            stat={borrowerBalance}
+                            icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
+                        />
+                        <StatsCard
+                            title={'Next installment amount'}
+                            stat={0.00}
+                            icon={<RiMoneyDollarCircleLine size={'3em'} />}
+                        />
+                        <StatsCard
+                            title={'Next installment due date'}
+                            stat={0}
+                            icon={<AiOutlineClockCircle size={'3em'} />}
+                        />
+                        <StatsCard
+                            title={'Installment to pay number'}
+                            stat={0}
+                            icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
+                        />
+                        <StatsCard
+                            title={'Loan interest rate'}
+                            stat={0 + '%'}
+                            icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
+                        />
+                        <StatsCard
+                            title={'Loan Status'}
+                            bgColor={'green'}
+                        />
+                    </SimpleGrid>
+                    <Flex justifyContent={'center'} alignItems={'center'}>
+                        <AddToBalanceForm />
+                        <PayInstallmentForm />
+                    </Flex>
+                </Box>
+                <ToastContainer autoClose={3000} />
+            </>
+        );
+    }
+
 }
