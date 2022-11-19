@@ -88,36 +88,13 @@ contract LoanDapp {
     }
 
     /**
-     * Deposits funds in the application balance
+     * Checks if user with provided wallet address is in borrowers mapping
      */
-    function depositToDapp() public payable forOwner {
-        applicationBalance += msg.value; //Adding transaction money to the application balance
-    }
-
-    /**
-     * Retrieves actual balance for user with provided address
-     */
-    function getBorrowerBalance(address walletAddress)
-        public
-        view
-        forBorrower(walletAddress)
-        returns (
-            uint256
-        )
-    {
-        return borrowers[walletAddress].balance;
-    }
-
-    /**
-     * Retrieves actual loan information for borrower with provided wallet address
-     */
-    function getBorrowersLoanInfo(address walletAddress)
-        public
-        view
-        forBorrower(walletAddress)
-        returns (Loan memory)
-    {
-        return loans[walletAddress];
+    function borrowerExists(address walletAddress) public view returns (bool) {
+        return
+            (borrowers[walletAddress].walletAddress.codehash != "")
+                ? true
+                : false;
     }
 
     /**
@@ -135,6 +112,31 @@ contract LoanDapp {
             0,
             false
         );
+    }
+
+    /**
+     * Retrieves Borrowers basic info
+     */
+    function getBorrowerInfo(address borrowerAddress)
+        public
+        view
+        forBorrower(borrowerAddress)
+        returns (string memory firstName, string memory lastName)
+    {
+        firstName = borrowers[borrowerAddress].firstName;
+        lastName = borrowers[borrowerAddress].lastName;
+    }
+
+    /**
+     * Retrieves actual balance for user with provided address
+     */
+    function getBorrowerBalance(address walletAddress)
+        public
+        view
+        forBorrower(walletAddress)
+        returns (uint256)
+    {
+        return borrowers[walletAddress].balance;
     }
 
     /**
@@ -163,6 +165,68 @@ contract LoanDapp {
 
         borrowers[walletAddress].balance -= amountToWithdraw; //Substract funds that borrower wants to withdraw from his balance in application
         payable(walletAddress).transfer(amountToWithdraw); //Transfer withdrawn funds to borrowers wallet
+    }
+
+    /**
+     * Deposits funds in the application balance
+     */
+    function depositToDapp() public payable forOwner {
+        applicationBalance += msg.value; //Adding transaction money to the application balance
+    }
+
+    /**
+     * Retrieves installment amount for borrower with provided wallet address
+     */
+    function getBorrowersInstallmentAmount(address walletAddress)
+        public
+        view
+        forBorrower(walletAddress)
+        returns (uint)
+    {
+        return loans[walletAddress].installmentAmount;
+    }
+
+    /**
+     * Retrieves next installment date for borrower with provided wallet address
+     */
+    function getBorrowersNextInstallmentDate(address walletAddress)
+        public
+        view
+        forBorrower(walletAddress)
+        returns (uint)
+    {
+        return loans[walletAddress].nextInstallmentDate;
+    }
+
+    /**
+     * Retrieves remaining installment number for borrower with provided wallet address
+     */
+    function getBorrowersRemainingInstallmentNumber(address walletAddress)
+        public
+        view
+        forBorrower(walletAddress)
+        returns (uint)
+    {
+        return loans[walletAddress].remainingInstallments;
+    }
+
+    /**
+     * Retrieves loan interest for borrower with provided wallet address
+     */
+    function getBorrowersInterest(address walletAddress)
+        public
+        view
+        forBorrower(walletAddress)
+        returns (uint)
+    {
+        return loans[walletAddress].interest;
+    }
+
+    /**
+     * Returns true if borrower has not any active loans
+     */
+    function canTakeLoan(address walletAddress) public view returns (bool) {
+        return (borrowers[walletAddress].isLoanTaken == false) ? true : false;
     }
 
     /**
@@ -201,7 +265,6 @@ contract LoanDapp {
         address walletAddress,
         uint256 loanAmount,
         uint256 amountToBePaid,
-        uint256 installmentAmount,
         uint256 interest,
         uint256 installmentsNumber,
         uint256 loanStartDate
@@ -211,6 +274,8 @@ contract LoanDapp {
             applicationBalance >= loanAmount,
             "Not enough money in application!"
         );
+
+        uint installmentAmount = amountToBePaid / installmentsNumber;
 
         loans[walletAddress] = Loan(
             loanAmount,
@@ -227,13 +292,6 @@ contract LoanDapp {
         borrowers[walletAddress].balance += loanAmount; //Transfer funds to borrowers balance
         borrowers[walletAddress].isLoanTaken = true; //Set is loan taken flag to true
         applicationBalance -= loanAmount; //Substract loan amount from application balance
-    }
-
-    /**
-     * Returns true if borrower has not any active loans
-     */
-    function canTakeLoan(address walletAddress) internal view returns (bool) {
-        return (borrowers[walletAddress].isLoanTaken == false) ? true : false;
     }
 
     /**

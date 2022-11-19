@@ -9,8 +9,8 @@ import {
 } from '@chakra-ui/react'
 import { useContext } from 'react'
 import { BlockchainContext } from '../context/BlockchainContext'
-export default function AddToBalanceForm() {
-    const {deposit} = useContext(BlockchainContext)
+export default function WithdrawForm() {
+    const {withdraw} = useContext(BlockchainContext)
     const {
         handleSubmit,
         register,
@@ -20,7 +20,7 @@ export default function AddToBalanceForm() {
     const onSubmit = async (values) => {
         console.log(JSON.stringify(values, null, 2))
         const {creditbalance} = values;
-        await deposit(creditbalance);
+        await withdraw(creditbalance);
     }
 
     return (
@@ -31,7 +31,7 @@ export default function AddToBalanceForm() {
                     fontSize={'x-large'}
                     fontWeight={600}
                     mb={4}>
-                    Add funds To Your Account
+                    Withdraw funds To Your Wallet
                 </Text>
                 <FormControl isInvalid={errors.creditbalance}>
                     <Input
@@ -48,7 +48,7 @@ export default function AddToBalanceForm() {
                     </FormErrorMessage>
                 </FormControl>
                 <Button mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
-                    Add
+                    Withdraw
                 </Button>
             </form>
         </Flex>
