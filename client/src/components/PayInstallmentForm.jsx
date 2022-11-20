@@ -11,11 +11,11 @@ import { useContext } from 'react'
 import { BlockchainContext } from '../context/BlockchainContext'
 
 export default function PayInstallmentForm() {
-    const { payInstallment, canTakeLoan, installmentAmount} = useContext(BlockchainContext)
+    const { payInstallment, canTakeLoan, installmentAmount } = useContext(BlockchainContext)
     const {
         handleSubmit,
         register,
-        formState: {isSubmitting },
+        formState: { isSubmitting },
     } = useForm()
 
     const onSubmit = async () => {
@@ -33,6 +33,13 @@ export default function PayInstallmentForm() {
                     fontWeight={600}
                     mb={4}>
                     Pay Installment
+                </Text>
+                <Text
+                    fontFamily={'heading'}
+                    fontSize={'medium'}
+                    fontWeight={600}
+                    mb={4}>
+                    {installmentAmount}ETH
                 </Text>
                 <Button mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
                     Pay
