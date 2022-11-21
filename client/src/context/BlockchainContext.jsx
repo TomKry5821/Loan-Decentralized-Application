@@ -141,7 +141,7 @@ export const BlockchainProvider = ({ children }) => {
     const takeLoan = async (amount, installmentsNumber, interest) => {
         try {
             const weiValue = ethers.utils.parseEther(amount.toString());
-            const amountToBePaid = weiValue + (weiValue * (interest / 100))
+            const amountToBePaid = ethers.BigNumber.from((weiValue * (1 + (interest / 100))).toString())
             const loanStartDate = Math.floor(new Date(Date.now()).getTime() / 1000)
             const newLoan = await contract.takeLoan(currentAccount, weiValue, amountToBePaid, interest, installmentsNumber, loanStartDate)
             await newLoan.wait
@@ -156,7 +156,9 @@ export const BlockchainProvider = ({ children }) => {
     const getLoanInfo = async () => {
         try {
             const installmentAmount = await contract.getBorrowersInstallmentAmount(currentAccount)
-            setInstallmentAmount(ethers.utils.formatEther(installmentAmount).toString().slice(0, 5))
+            const installmentAmountEther = ethers.utils.formatEther(installmentAmount)
+            setInstallmentAmount(installmentAmountEther.toString().slice(0, 5))
+            console.log(installmentAmount.toString())
             const interest = await contract.getBorrowersInterest(currentAccount)
             setInterest(interest)
             const remainingInstallments = await contract.getBorrowersRemainingInstallmentNumber(currentAccount)
