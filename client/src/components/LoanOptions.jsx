@@ -49,7 +49,9 @@ export default function LoanOptions() {
                     />
                 </CardBody>
                 <CardFooter>
-                    <Button>Take Loan</Button>
+                    <Button
+                        onClick={() => takeLoan(50, 48, 6)}
+                    >Take Loan</Button>
                 </CardFooter>
             </Card>
             <Card>
@@ -65,7 +67,9 @@ export default function LoanOptions() {
                     />
                 </CardBody>
                 <CardFooter>
-                    <Button>Take Loan</Button>
+                    <Button
+                        onClick={() => takeLoan(100, 72, 2)}
+                    >Take Loan</Button>
                 </CardFooter>
             </Card>
         </SimpleGrid>
