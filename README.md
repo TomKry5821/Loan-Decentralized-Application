@@ -24,6 +24,8 @@ Some screens from application:
 Main page
 ![image](https://user-images.githubusercontent.com/93645494/202867165-8544a9d6-de7e-407b-a2ad-6837d9b0442c.png)
 
+Application with borrower that has not take loan
+![image](https://user-images.githubusercontent.com/93645494/203324216-098c6e51-19f0-43bb-8ece-0a9bab1ff068.png)
 
 Application with borrower that has taken loan
 ![image](https://user-images.githubusercontent.com/93645494/202867126-d27f386f-01a6-44c4-9574-528951f85645.png)
