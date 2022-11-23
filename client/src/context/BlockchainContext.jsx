@@ -15,6 +15,7 @@ export const BlockchainProvider = ({ children }) => {
     const [interest, setInterest] = useState()
     const [remainingInstallments, setRemainingInstallments] = useState()
     const [nextInstallmentDueDate, setNextInstallmentDueDate] = useState()
+    const [loanInterest, setLoanInterest] = useState()
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
@@ -138,6 +139,19 @@ export const BlockchainProvider = ({ children }) => {
         }
     }
 
+    const calculateLoanInterest = async (loanAmount, installmentNumber) => {
+        try {
+            const weiValue = ethers.utils.parseEther(loanAmount.toString());
+            const loanInterest = await contract.calculateInterestInPercent(weiValue, installmentNumber)
+            await loanInterest.wait
+            setLoanInterest(loanInterest)
+            alert("Calculated loan interest - " + loanInterest + "%")
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const takeLoan = async (amount, installmentsNumber, interest) => {
         try {
             const weiValue = ethers.utils.parseEther(amount.toString());
@@ -178,10 +192,6 @@ export const BlockchainProvider = ({ children }) => {
             alert("Installment paid successfully")
             await getLoanInfo()
             await getBorrowerBalance()
-            if(remainingInstallments == 0){
-                alert("You have paid your loan. Congratulations!")
-            }
-
         } catch (error) {
             console.log(error)
         }
@@ -216,7 +226,9 @@ export const BlockchainProvider = ({ children }) => {
                 interest,
                 remainingInstallments,
                 nextInstallmentDueDate,
-                payInstallment
+                payInstallment,
+                loanInterest,
+                calculateLoanInterest
             }}>
             {children}
         </BlockchainContext.Provider>
