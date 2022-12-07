@@ -27,6 +27,11 @@ contract LoanDapp {
     uint256 private applicationBalance;
 
     /**
+    * Registration fee
+    */
+    uint256 private registrationFeePool;
+
+    /**
      * Map that contains users loans with borrower wallet address as key
      */
     mapping(address => Loan) private loans;
@@ -104,7 +109,11 @@ contract LoanDapp {
         address payable walletAddress,
         string memory firstName,
         string memory lastName
-    ) public {
+    ) 
+    payable
+    public {
+        require(msg.value == 1 * ETHER, "Registration fee is 1 ETH");
+        registrationFeePool += msg.value;
         borrowers[walletAddress] = Borrower(
             walletAddress,
             firstName,
