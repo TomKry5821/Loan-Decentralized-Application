@@ -70,7 +70,7 @@ export const BlockchainProvider = ({ children }) => {
 
     const addNewBorrower = async (walletAddress, firstName, lastName) => {
         try {
-            const newBorrower = await contract.addNewBorrower(walletAddress, firstName, lastName)
+            const newBorrower = await contract.addNewBorrower(walletAddress, firstName, lastName, { value:  ethers.utils.parseUnits("1", "ether")})
             await newBorrower.wait()
             console.log(`${firstName} added!`)
             getBorrowerExists()
