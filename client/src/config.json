@@ -161,6 +161,52 @@
           "type": "address"
         }
       ],
+      "name": "getBorrowerLoansHistory",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "loanAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "interest",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "installmentsNumber",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "loanStartDate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isActive",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct LoanDapp.LoanDTO[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        }
+      ],
       "name": "getBorrowersInstallmentAmount",
       "outputs": [
         {
@@ -277,7 +323,7 @@
       ],
       "name": "takeLoan",
       "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "payable",
       "type": "function"
     },
     {
