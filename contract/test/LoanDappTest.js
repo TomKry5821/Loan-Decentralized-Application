@@ -38,26 +38,14 @@ describe("LoanDapp contract", function () {
         it("Should add new borrower", async function () {
             //GIVEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
-            hardhatLoanDapp.addNewBorrower(addr1.address, "Test", "Test", { value: ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "Test", "Test");
 
             //WHEN
             //THEN
             expect(await hardhatLoanDapp.borrowerExists(addr1.address)).to.equal(true);
         });
 
-        it("Should not add new borrower with not enough register fee", async function () {
-            //GIVEN
-            const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
-
-            //WHEN
-            //THEN
-            await expect(hardhatLoanDapp.addNewBorrower(addr1.address, "Test", "Test", { value: "10000" }))
-                .to
-                .be
-                .revertedWith('Registration fee is 1 ETH');
-        });
-
-        it("Should throw you can only manage your error", async function () {
+        it("Should throw you can only manage your account error", async function () {
             //GIVEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
             hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName", { value: ETHER });
@@ -149,7 +137,7 @@ describe("LoanDapp contract", function () {
         it("Should throw not enough application balance error for take loan", async function () {
             //GIVEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
-            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName", { value: ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
 
             //WHEN
             //THEN
@@ -164,17 +152,37 @@ describe("LoanDapp contract", function () {
                 .revertedWith('Not enough money in application!');
         });
 
+        it("Should throw not enough registration fee error for take loan", async function () {
+            //GIVEN
+            const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
+            hardhatLoanDapp.depositToDapp({ value: TEN_ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
+
+            //WHEN
+            //THEN
+            await expect(hardhatLoanDapp.connect(addr1).takeLoan(addr1.address,
+                TEN_ETHER,
+                AMOUNT_TO_BE_PAID,
+                INTEREST,
+                INSTALLMENTS_NUMBER,
+                LOAN_START_DATE))
+                .to
+                .be
+                .revertedWith('Not enough funds for pay registration fee');
+        });
+
         it("Should return false with borrower with loan", async function () {
             //GIVEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
             hardhatLoanDapp.depositToDapp({ value: TEN_ETHER });
-            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName", { value: ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
             await hardhatLoanDapp.connect(addr1).takeLoan(addr1.address,
                 TEN_ETHER,
                 AMOUNT_TO_BE_PAID,
                 INTEREST,
                 INSTALLMENTS_NUMBER,
-                LOAN_START_DATE);
+                LOAN_START_DATE,
+                { value: ETHER });
 
             //WHEN
             let response = await hardhatLoanDapp.connect(addr1).canTakeLoan(addr1.address);
@@ -187,13 +195,14 @@ describe("LoanDapp contract", function () {
             //GIVEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
             hardhatLoanDapp.depositToDapp({ value: TEN_ETHER });
-            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName", { value: ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
             await hardhatLoanDapp.connect(addr1).takeLoan(addr1.address,
                 TEN_ETHER,
                 AMOUNT_TO_BE_PAID,
                 INTEREST,
                 INSTALLMENTS_NUMBER,
-                LOAN_START_DATE);
+                LOAN_START_DATE,
+                { value: ETHER });
 
             //WHEN
             let response = await hardhatLoanDapp.connect(addr1).getBorrowersInstallmentAmount(addr1.address);
@@ -206,13 +215,14 @@ describe("LoanDapp contract", function () {
             //GIVEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
             hardhatLoanDapp.depositToDapp({ value: TEN_ETHER });
-            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName", { value: ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
             await hardhatLoanDapp.connect(addr1).takeLoan(addr1.address,
                 TEN_ETHER,
                 AMOUNT_TO_BE_PAID,
                 INTEREST,
                 INSTALLMENTS_NUMBER,
-                LOAN_START_DATE);
+                LOAN_START_DATE,
+                { value: ETHER });
 
             //WHEN
             let response = await hardhatLoanDapp.connect(addr1).getBorrowersNextInstallmentDate(addr1.address);
@@ -225,13 +235,14 @@ describe("LoanDapp contract", function () {
             //GIVEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
             hardhatLoanDapp.depositToDapp({ value: TEN_ETHER });
-            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName", { value: ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
             await hardhatLoanDapp.connect(addr1).takeLoan(addr1.address,
                 TEN_ETHER,
                 AMOUNT_TO_BE_PAID,
                 INTEREST,
                 INSTALLMENTS_NUMBER,
-                LOAN_START_DATE);
+                LOAN_START_DATE,
+                { value: ETHER });
 
             //WHEN
             let response = await hardhatLoanDapp.connect(addr1).getBorrowersRemainingInstallmentNumber(addr1.address);
@@ -244,13 +255,14 @@ describe("LoanDapp contract", function () {
             //GIVEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
             hardhatLoanDapp.depositToDapp({ value: TEN_ETHER });
-            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName", { value: ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
             await hardhatLoanDapp.connect(addr1).takeLoan(addr1.address,
                 TEN_ETHER,
                 AMOUNT_TO_BE_PAID,
                 INTEREST,
                 INSTALLMENTS_NUMBER,
-                LOAN_START_DATE);
+                LOAN_START_DATE,
+                { value: ETHER });
 
             //WHEN
             let response = await hardhatLoanDapp.connect(addr1).getBorrowersInterest(addr1.address);
@@ -264,13 +276,14 @@ describe("LoanDapp contract", function () {
             //WHEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
             hardhatLoanDapp.depositToDapp({ value: TEN_ETHER });
-            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName", { value: ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
             await hardhatLoanDapp.connect(addr1).takeLoan(addr1.address,
                 TEN_ETHER,
                 AMOUNT_TO_BE_PAID,
                 INTEREST,
                 INSTALLMENTS_NUMBER,
-                LOAN_START_DATE);
+                LOAN_START_DATE,
+                { value: ETHER });
             await hardhatLoanDapp.connect(addr1).deposit(addr1.address, { value: AMOUNT_TO_BE_PAID });
 
             //THEN
@@ -281,7 +294,7 @@ describe("LoanDapp contract", function () {
             //GIVEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
             hardhatLoanDapp.depositToDapp({ value: TEN_ETHER });
-            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName", { value: ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
 
             //WHEN
             //THEN
@@ -295,13 +308,14 @@ describe("LoanDapp contract", function () {
             //GIVEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
             hardhatLoanDapp.depositToDapp({ value: TEN_ETHER });
-            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName", { value: ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
             await hardhatLoanDapp.connect(addr1).takeLoan(addr1.address,
                 TEN_ETHER,
                 AMOUNT_TO_BE_PAID,
                 INTEREST,
                 INSTALLMENTS_NUMBER,
-                LOAN_START_DATE);
+                LOAN_START_DATE,
+                { value: ETHER });
             hardhatLoanDapp.connect(addr1).withdraw(addr1.address, TEN_ETHER);
 
             //WHEN
@@ -312,25 +326,52 @@ describe("LoanDapp contract", function () {
                 .revertedWith('Not enough money at account balance!');
         });
 
-        it("Should close paid loan", async function () {
+        it("Should close paid loan and return registration fee to borrowers balance", async function () {
             //GIVEN
             const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
             hardhatLoanDapp.depositToDapp({ value: TEN_ETHER });
-            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName", { value: ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
             await hardhatLoanDapp.connect(addr1).takeLoan(addr1.address,
                 TEN_ETHER,
                 AMOUNT_TO_BE_PAID,
                 INTEREST,
                 1,
-                LOAN_START_DATE);
+                LOAN_START_DATE,
+                { value: ETHER });
             hardhatLoanDapp.connect(addr1).deposit(addr1.address, { value: ETHER });
             hardhatLoanDapp.connect(addr1).payInstallment(addr1.address);
 
             //WHEN
             let response = await hardhatLoanDapp.connect(addr1).canTakeLoan(addr1.address);
+            let borrowersBalance = await hardhatLoanDapp.connect(addr1). getBorrowerBalance(addr1.address);
 
             //THEN
             expect(response).to.be.equal(true);
+            expect(borrowersBalance == 500000000000000000);
+        });
+
+        it("Should close paid loan and not return registration fee to borrowers balance", async function () {
+            //GIVEN
+            const { hardhatLoanDapp, addr1 } = await loadFixture(deployLoanDappFixture);
+            hardhatLoanDapp.depositToDapp({ value: TEN_ETHER });
+            hardhatLoanDapp.addNewBorrower(addr1.address, "firstName", "lastName");
+            await hardhatLoanDapp.connect(addr1).takeLoan(addr1.address,
+                TEN_ETHER,
+                AMOUNT_TO_BE_PAID,
+                INTEREST,
+                1,
+                100,
+                { value: ETHER });
+            hardhatLoanDapp.connect(addr1).deposit(addr1.address, { value: ETHER });
+            hardhatLoanDapp.connect(addr1).payInstallment(addr1.address);
+
+            //WHEN
+            let response = await hardhatLoanDapp.connect(addr1).canTakeLoan(addr1.address);
+            let borrowersBalance = await hardhatLoanDapp.connect(addr1). getBorrowerBalance(addr1.address);
+
+            //THEN
+            expect(response).to.be.equal(true);
+            expect(borrowersBalance == 0);
         });
     });
 });
