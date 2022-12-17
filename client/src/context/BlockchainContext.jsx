@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { abi, contractAddress } from '../config.json'
 import { ethers } from "ethers"
-import { toast } from 'react-toastify';
 
 export const BlockchainContext = React.createContext("");
 
@@ -16,6 +15,7 @@ export const BlockchainProvider = ({ children }) => {
     const [remainingInstallments, setRemainingInstallments] = useState()
     const [nextInstallmentDueDate, setNextInstallmentDueDate] = useState()
     const [loanInterest, setLoanInterest] = useState()
+    const [loanHistory, setLoanHistory] = useState([])
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
@@ -23,6 +23,10 @@ export const BlockchainProvider = ({ children }) => {
     const address = contractAddress;
     const contractAbi = abi;
     const contract = new ethers.Contract(address, contractAbi, signer);
+
+    // The ABI of the object
+
+    const dataType = "(uint256,uint256,uint256,uint256,bool)[]";
 
     const connectWallet = async () => {
         try {
@@ -70,7 +74,7 @@ export const BlockchainProvider = ({ children }) => {
 
     const addNewBorrower = async (walletAddress, firstName, lastName) => {
         try {
-            const newBorrower = await contract.addNewBorrower(walletAddress, firstName, lastName, { value:  ethers.utils.parseUnits("1", "ether")})
+            const newBorrower = await contract.addNewBorrower(walletAddress, firstName, lastName)
             await newBorrower.wait()
             console.log(`${firstName} added!`)
             getBorrowerExists()
@@ -157,7 +161,11 @@ export const BlockchainProvider = ({ children }) => {
             const weiValue = ethers.utils.parseEther(amount.toString());
             const amountToBePaid = ethers.BigNumber.from((weiValue * (1 + (interest / 100))).toString())
             const loanStartDate = Math.floor(new Date(Date.now()).getTime() / 1000)
-            const newLoan = await contract.takeLoan(currentAccount, weiValue, amountToBePaid, interest, installmentsNumber, loanStartDate)
+            const registerFee = loanAmount > 50
+                ? loanAmount / 100
+                : 0.5;
+            const newLoan = await contract.takeLoan(currentAccount, weiValue, amountToBePaid, interest, installmentsNumber, loanStartDate,
+                { value: ethers.utils.parseEther(registerFee.toString()) })
             await newLoan.wait
             alert("Loan took successfully!")
             await getBorrowerBalance()
@@ -197,6 +205,17 @@ export const BlockchainProvider = ({ children }) => {
         }
     }
 
+    const getLoanHistory = async () => {
+        try {
+            if (currentAccount) {
+                const loans = await contract.getBorrowerLoansHistory(currentAccount);
+                setLoanHistory([... loans]);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     useEffect(() => {
         checkifWalletIsConnected()
@@ -205,6 +224,7 @@ export const BlockchainProvider = ({ children }) => {
         getBorrowerExists()
         getCanTakeLoan()
         getLoanInfo()
+        getLoanHistory()
     }, [currentAccount])
 
 
@@ -228,7 +248,8 @@ export const BlockchainProvider = ({ children }) => {
                 nextInstallmentDueDate,
                 payInstallment,
                 loanInterest,
-                calculateLoanInterest
+                calculateLoanInterest,
+                loanHistory
             }}>
             {children}
         </BlockchainContext.Provider>
