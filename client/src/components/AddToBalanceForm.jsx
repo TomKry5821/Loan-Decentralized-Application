@@ -10,7 +10,7 @@ import {
 import { useContext } from 'react'
 import { BlockchainContext } from '../context/BlockchainContext'
 export default function AddToBalanceForm() {
-    const {deposit} = useContext(BlockchainContext)
+    const { deposit } = useContext(BlockchainContext)
     const {
         handleSubmit,
         register,
@@ -19,7 +19,7 @@ export default function AddToBalanceForm() {
 
     const onSubmit = async (values) => {
         console.log(JSON.stringify(values, null, 2))
-        const {creditbalance} = values;
+        const { creditbalance } = values;
         await deposit(creditbalance);
     }
 

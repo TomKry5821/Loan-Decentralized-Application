@@ -8,7 +8,7 @@ import {
     StatNumber,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { ReactNode, useContext } from 'react';
+import { useContext } from 'react';
 import { RiMoneyDollarCircleLine } from 'react-icons/ri';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
@@ -90,28 +90,28 @@ export default function CurrentTotals() {
                             icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
                         />
                         <StatsCard
-                            stat={!canTakeLoan? 'Loan active' : 'Loan inactive'}
-                            bgColor={!canTakeLoan? 'green.300' : 'red.300'}
+                            stat={!canTakeLoan ? 'Loan active' : 'Loan inactive'}
+                            bgColor={!canTakeLoan ? 'green.300' : 'red.300'}
                             icon={<FiCheck size={'3em'} />}
                         />
                         <StatsCard
                             title={'Next installment amount'}
-                            stat={!canTakeLoan? installmentAmount : '-'}
+                            stat={!canTakeLoan ? installmentAmount : '-'}
                             icon={<RiMoneyDollarCircleLine size={'3em'} />}
                         />
                         <StatsCard
                             title={'Next installment due date'}
-                            stat={!canTakeLoan? nextInstallmentDueDate : '-'}
+                            stat={!canTakeLoan ? nextInstallmentDueDate : '-'}
                             icon={<AiOutlineClockCircle size={'3em'} />}
                         />
                         <StatsCard
                             title={'Installment to pay number'}
-                            stat={!canTakeLoan? remainingInstallments : '-'}
+                            stat={!canTakeLoan ? remainingInstallments : '-'}
                             icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
                         />
                         <StatsCard
                             title={'Loan interest rate'}
-                            stat={!canTakeLoan? interest + "%" : '-'}
+                            stat={!canTakeLoan ? interest + "%" : '-'}
                             icon={<MdOutlineAccountBalanceWallet size={'3em'} />}
                         />
                         :

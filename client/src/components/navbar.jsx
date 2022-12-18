@@ -142,7 +142,7 @@ export default function Navbar() {
                         </Tr>
                         <Tr>
                           <Td>Active</Td>
-                          <Td >{loan.isActive? "Yes" : "No"}</Td>
+                          <Td >{loan.isActive ? "Yes" : "No"}</Td>
                         </Tr>
                       </Tbody>
                       <Tfoot>
@@ -162,5 +162,3 @@ export default function Navbar() {
 
   );
 }
-
-const NAV_ITEMS = [];
