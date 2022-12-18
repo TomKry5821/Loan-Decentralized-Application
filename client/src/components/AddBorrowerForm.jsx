@@ -36,7 +36,7 @@ export default function AddBorrowerForm() {
                 fontWeight={600}>
                 Please enter your first and last name to register as borrower.
                 <br></br>
-                Remember! To become a borrower you have to pay 1 ETH registration fee
+                Remember! You have to pay registration fee dependent on loan amount while taking the loan
             </Text>
             <Flex justifyContent={'center'} alignItems={'center'} p={5} mt={10}>
                 <form onSubmit={handleSubmit(onSubmit)}>
