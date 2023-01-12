@@ -36,7 +36,7 @@ export default function AddBorrowerForm() {
                     fontWeight={600}>
                     Please enter your first and last name to register as borrower.
                     <br></br>
-                    Remember! You have to pay registration fee dependent on loan amount while taking the loan
+                    Remember! You have to pay registration fee dependent on loan amount while taking the loan. In case of default in payment of fee installments non-refundably frozen
                 </Text>
                 <Flex justifyContent={'center'} alignItems={'center'} p={5} mt={10}>
                     <form onSubmit={handleSubmit(onSubmit)}>
